@@ -11,12 +11,6 @@ interface Request {
 
 class CreateAppointmentService {
 
-
-
-    //constructor(appointmentsRepository: AppointmentsRepository) {
-    //    this.appointmentsRepository = appointmentsRepository
-    //}
-
     public async execute({date, provider_id}: Request): Promise<Appointment> {
 
         const appointmentsRepository = getCustomRepository(AppointmentsRepository);
