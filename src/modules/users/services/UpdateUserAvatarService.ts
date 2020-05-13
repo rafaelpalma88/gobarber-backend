@@ -4,7 +4,6 @@ import IStorageProvider from '@shared/container/providers/StorageProvider/models
 import AppError from '@shared/errors/AppError'
 
 import User from '../infra/typeorm/entities/User'
-import uploadConfig from '@config/upload'
 
 interface IRequest {
     user_id: string;
