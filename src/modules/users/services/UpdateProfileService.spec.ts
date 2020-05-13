@@ -93,6 +93,17 @@ describe('UpdateProfile', () => {
         })).rejects.toBeInstanceOf(AppError)
     })
 
+    it('should not be able to update the user if the user not exists', async () => {
+
+        expect(updateProfile.execute({
+            user_id: 'not-existing-user',
+            name: 'John Doe',
+            email: 'johndoe@gmail.com',
+            password: 'teste@123'
+        })).rejects.toBeInstanceOf(AppError)
+
+    })
+
     it('should not be able to update the password if the old password is incorrect', async () => {
 
         const user = await fakeUsersRepository.create({
