@@ -1,3 +1,4 @@
+import 'reflect-metadata'
 import { injectable, inject } from 'tsyringe'
 
 import Appointment from '../infra/typeorm/entities/Appointment'
@@ -29,18 +30,24 @@ class ListProvidersAppointmentService {
         month
     }: IRequest): Promise<Appointment[]> {
 
-        const cachedData = await this.cacheProvider.recover('asd');
+        const cacheKey = `provider-appointments:${provider_id}:${year}-${month}-${day}`;
 
-        console.log(cachedData)
+        let appointments = await this.cacheProvider.recover<Appointment[]>(cacheKey);
 
-        const appointments = await this.appointmentsRepository.findAllInDayFromProvider({
-            provider_id,
-            day,
-            year,
-            month
-        })
+        if (!appointments) {
+            appointments = await this.appointmentsRepository.findAllInDayFromProvider({
+                provider_id,
+                day,
+                year,
+                month
+            })
 
-        //await this.cacheProvider.save('asd', 'asd')
+            await this.cacheProvider.save(
+                cacheKey,
+                appointments
+            )
+
+        }
 
         return appointments;
     }
